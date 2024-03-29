@@ -28,7 +28,6 @@ const Stat = () => {
       </Layout>
       <Layout>
         <LineChart></LineChart>
-        <LineChart></LineChart>
       </Layout>
     </>
   );

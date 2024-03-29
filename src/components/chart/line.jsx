@@ -98,20 +98,30 @@ const options = {
   },
 };
 
-function graphData(data){
+function graphData1(data){
   return (
     {
       labels: labelsWeekly,
       datasets: [
         {
-          label: "Tỉ lệ hàng bỏ vào giỏ",
+          label: "Nhiệt độ trung bình",
           data:  [34, 45, 56, 67, 78, 89, 90],
           
           borderColor: "rgb(255, 99, 132)",
           backgroundColor: "rgba(255, 99, 132, 0.5)",
-        },
+        }
+      ],
+    }
+  )
+}
+
+function graphData2(data){
+  return (
+    {
+      labels: labelsWeekly,
+      datasets: [
         {
-          label: "Tỉ lệ trả lại hàng",
+          label: "Độ ẩm trung bình",
           data: data,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -147,7 +157,12 @@ const LineChart = () => {
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData(data)}
+        data = {graphData1(data)}
+      />
+      <Line
+        style={{ marginBottom: "30px" }}
+        options={options}
+        data = {graphData2(data)}
       />
 
 

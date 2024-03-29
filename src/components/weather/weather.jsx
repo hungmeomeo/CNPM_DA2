@@ -27,7 +27,7 @@ const Weather = () => {
                     setDataTemp(tempData);
                 })
                 .catch(error => {
-                    alert("Error fetching data: " + error.message);
+                    
                 });
         };
     
