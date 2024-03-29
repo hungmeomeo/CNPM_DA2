@@ -105,7 +105,7 @@ function graphData1(data){
       datasets: [
         {
           label: "Nhiệt độ trung bình",
-          data:  [34, 45, 56, 67, 78, 89, 90],
+          data:  data,
           
           borderColor: "rgb(255, 99, 132)",
           backgroundColor: "rgba(255, 99, 132, 0.5)",
@@ -131,41 +131,84 @@ function graphData2(data){
   )
 }
 
+function graphData3(data){
+  return (
+    {
+      labels: labelsWeekly,
+      datasets: [
+        {
+          label: "Ánh sáng trung bình",
+          data: data,
+          borderColor: "	rgb(255,255,0)",
+          backgroundColor: "	rgb(255,255,51)",
+        },
+      ],
+    }
+  )
+}
+
 const LineChart = () => {
-  const [data, setData] = useState([]);
+  function getDataTemp() {
+    return fetch("https://multidisciplinary-project.onrender.com/api/v1/week/tempsensor")
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
+  }
+  function getDataLight() {
+    return fetch("https://multidisciplinary-project.onrender.com/api/v1/week/lightsensor")
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
+  }
+  function getDataHumi() {
+    return fetch("https://multidisciplinary-project.onrender.com/api/v1/week/humisensor")
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        });
+  }
+  const [dataHumi, setDataHumi] = useState([]);
+  const [dataTemp, setDataTemp] = useState([]);
+  const [dataLight, setDataLight] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://multidisciplinary-project.onrender.com/api/v1/week/test"
-        );
-        const data = await response.json();
-        console.log(data.data);
-        setData(data.data);
-      } catch (error) {
-        alert("Error fetching data: " + error.message);
-      }
+    const fetchAndSetData = () => {
+        Promise.all([getDataHumi(), getDataTemp(), getDataLight()])
+            .then(([humiData, tempData, lightData]) => {
+                setDataHumi(humiData);
+                setDataTemp(tempData);
+                setDataLight(lightData);
+            })
+            .catch(error => {
+                
+            });
     };
 
-    fetchData();
-  }
-  , []);
+    // Immediately fetch and set data on component mount.
+    fetchAndSetData();
+
+    
+}, []); // Empty dependency array means this effect runs once on mount and cleanup runs on unmount.
 
   return (
     <div className="container">
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData1(data)}
+        data = {graphData1(dataTemp.data)}
       />
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData2(data)}
+        data = {graphData2(dataHumi.data)}
       />
-
-
+      <Line
+        style={{ marginBottom: "30px" }}
+        options={options}
+        data = {graphData3(dataLight.data)}
+      />
     </div>
   );
 };

@@ -16,17 +16,24 @@
     display: flex;
     align-items: center;
   }
+
+  .nav .ul1 {
+    list-style-type: none;
+    margin-right: 3.2em; /* Use relative units like em */
+    display: flex;
+    align-items: center;
+  }
   
   .nav .li {
     display: inline-block;
   }
   
   .nav .li:not(:last-child) {
-    margin-right: 12em; /* Use relative units like em */
+    margin-right: 10em; /* Use relative units like em */
   }
 
   .nav .li1:not(:last-child) {
-    margin-right: 15em; /* Use relative units like em */
+    margin-right: 13em; /* Use relative units like em */
   }
   
   .nav .link {

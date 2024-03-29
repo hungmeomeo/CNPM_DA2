@@ -10,8 +10,11 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 
+
+
+
 const columns = [
-  {id: 'stt', label: 'Index', minWidth: 50, align: 'center',},
+  { id: 'stt', label: 'Index', minWidth: 50, align: 'center' },
   { id: 'feed_id', label: 'Feed ID', minWidth: 170 },
   { id: 'value', label: 'Status', minWidth: 100 },
   {
@@ -19,14 +22,23 @@ const columns = [
     label: 'Time',
     minWidth: 190,
     align: 'center',
-    format: (value) => value.toLocaleString('en-US'),
+    format: value => value.toLocaleString('en-US'),
   }
 ];
+
 
 // const fetchData = async () => {  
 
 export default function StickyHeadTable() {
   const [rows, setData] = useState([]);
+
+  function convertGMT(dateString) {
+    const date = new Date(dateString + 'Z'); // Ensure the input is treated as UTC
+    date.setHours(date.getHours() + 7); // Add 7 hours
+    // Format the date to a more readable form, local time assumed
+    const updatedDateString = date.toISOString().replace('T', ' ').substring(0, 19);
+    return updatedDateString;
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,11 +47,15 @@ export default function StickyHeadTable() {
           "https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/1000"
         );
         const data = await response.json();
-        console.log(data.data);
-        const updatedData = data.data.map((item, index) => ({ ...item, stt: index + 1 }));
+        const updatedData = data.data.map((item, index) => ({
+          ...item,
+          stt: index + 1,
+          created_at: convertGMT(item.created_at) // Correctly access and convert created_at here
+        }));
+        console.log(updatedData); // This now holds the modified data
         setData(updatedData);
       } catch (error) {
-        alert("Error fetching data: " + error.message);
+        console.error("Failed to fetch data", error);
       }
     };
 
