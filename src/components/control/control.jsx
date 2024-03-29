@@ -23,6 +23,7 @@ const columns = [
   }
 ];
 
+// const fetchData = async () => {  
 
 export default function StickyHeadTable() {
   const [rows, setData] = useState([]);
@@ -41,8 +42,10 @@ export default function StickyHeadTable() {
         alert("Error fetching data: " + error.message);
       }
     };
-  
-    fetchData();
+
+    const interval = setInterval(fetchData, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const [page, setPage] = React.useState(0);
