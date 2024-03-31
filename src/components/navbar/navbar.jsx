@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useTranslation } from "react-i18next";
+import Toggle from "../control/control";
 
 const Navbar = () => {
   const [age, setAge] = React.useState('');
@@ -77,6 +78,8 @@ const Navbar = () => {
                 <MenuItem value="">
                   <img src="https://tse1.mm.bing.net/th?id=OIP.U-h9wYdOSH047roWjY_1TgAAAA&pid=Api&P=0&h=180" alt="English Flag" style={{ width: "50px", height: "auto",marginLeft:"10px" }} />
                 </MenuItem>
+                {/* <Toggle></Toggle>
+                <Toggle></Toggle> */}
               </Select>
             </FormControl>
           

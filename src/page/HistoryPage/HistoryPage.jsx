@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import Layout from "../../layouts/layout";
 import Hero from "../../components/hero/hero";
 import Navbar from "../../components/navbar/navbar";
-import StickyHeadTable from "../../components/control/control";
+import StickyHeadTable from "../../components/historyTable/historyTable";
 
 
 const Homepage = () => {
-  const [file, setFile] = useState(null);
-  const [imageData, setImageData] = useState([]);
- 
-
-  
 
   return (
     <div>
