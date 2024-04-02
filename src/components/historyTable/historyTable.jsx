@@ -57,7 +57,7 @@ export default function StickyHeadTable() {
 
   const rows = rawRows.filter(row => {
     if (search) {
-        if (!row.feed_id.toLowerCase().includes(search.toLowerCase())) {
+        if (!row.feed_id.toLowerCase().includes(search.toLowerCase()) &&!row.created_at.toLowerCase().includes(search.toLowerCase())) {
             return false;
         }
     }

@@ -15,8 +15,6 @@ const Search = () => {
       </Layout>
       <Layout>
         <Hero></Hero>
-        
-        <Control></Control>
         <Weather/>
       </Layout>
     </>
