@@ -9,7 +9,7 @@ export function convertGMT(dateString) {
   return updatedDateString;
 }
 
-export default function useDataFetch(url, intervalMs = 1000) {
+export default function useDataFetch(url, intervalMs = 100000) {
   const [data, setData] = useState([]);
 
   useEffect(() => {

@@ -9,6 +9,12 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import useDataFetch from '../../utils/history';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import TextField from '@mui/material/TextField';
+
 
 const columns = [
   { id: 'stt', label: 'Index', minWidth: 50, align: 'center' },
@@ -23,15 +29,20 @@ const columns = [
   }
 ];
 
-
-// const fetchData = async () => {  
-
 export default function StickyHeadTable() {
+
+  // Swal.fire({
+  //   title: "The Internet?",
+  //   text: "That thing is still around?",
+  //   icon: "question"
+  // });
   
-  const rows = useDataFetch("https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/100");
+  const rawRows = useDataFetch("https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/100");
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [search, setSearch] = React.useState("")
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -42,10 +53,54 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+  const [dateRange, setDateRange] = useState([null, null]);
+
+  const rows = rawRows.filter(row => {
+    if (search) {
+        if (!row.feed_id.toLowerCase().includes(search.toLowerCase())) {
+            return false;
+        }
+    }
+    if (dateRange) {
+        const startDate = dateRange[0]
+        const endDate = dateRange[1]
+        if (startDate && endDate) {
+            const rowDate = new Date(row.created_at)
+            if (!(startDate.toDate() <= rowDate && rowDate <= endDate.toDate())) {
+                return false
+            }
+        }
+    }
+    return true
+  })
+  
+
+
+  // Use useEffect to print the value whenever it changes
+  useEffect(() => {
+    console.log('Date Range:', dateRange);
+    // Optionally format the output if the values are not null
+    if (dateRange[0] && dateRange[1]) {
+      console.log(`Formatted Range: ${dateRange[0].format('YYYY-MM-DD')} to ${dateRange[1].format('YYYY-MM-DD')}`);
+    }
+  }, [dateRange]);
   
 
 return (
     <Paper sx={{ width: '100%', overflow: 'hidden'}}>
+        <TextField sx={{ width: '100%'}} label = "Searching" value={search} onChange={(e) => setSearch(e.currentTarget.value)}></TextField>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DateRangePicker']}>
+                <DateRangePicker 
+                startText="Check-in"
+                endText="Check-out"
+                value={dateRange}
+                onChange={(newValue) => {
+                  setDateRange(newValue);
+                }}
+                 />
+            </DemoContainer>
+        </LocalizationProvider>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
                 <TableHead>

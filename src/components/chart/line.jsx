@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import swal from "sweetalert";
 
 ChartJS.register(
   CategoryScale,

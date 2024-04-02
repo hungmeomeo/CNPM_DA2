@@ -3,7 +3,7 @@ import styles from './weather.module.css';
 import { getDataHumi, getDataLight, getDataTemp, convertUTCtoLocal } from '../../utils/weather';
 
 const Weather = () => {
-  
+
     const [dataHumi, setDataHumi] = useState(null);
     const [dataTemp, setDataTemp] = useState(null);
     const [dataLight, setDataLight] = useState(null);
@@ -28,7 +28,7 @@ const Weather = () => {
     
         // Set up the interval to fetch data every X milliseconds.
         // For example, to refresh data every 5 seconds, set the interval to 5000 milliseconds.
-        const intervalId = setInterval(fetchAndSetData, 30000);
+        const intervalId = setInterval(fetchAndSetData, 5000);
     
         // Clean up the interval on component unmount.
         return () => clearInterval(intervalId);
