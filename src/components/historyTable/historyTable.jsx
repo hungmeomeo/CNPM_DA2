@@ -8,10 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
-
-
-
+import useDataFetch from '../../utils/history';
 
 const columns = [
   { id: 'stt', label: 'Index', minWidth: 50, align: 'center' },
@@ -30,39 +27,8 @@ const columns = [
 // const fetchData = async () => {  
 
 export default function StickyHeadTable() {
-  const [rows, setData] = useState([]);
-
-  function convertGMT(dateString) {
-    const date = new Date(dateString + 'Z'); // Ensure the input is treated as UTC
-    date.setHours(date.getHours() + 7); // Add 7 hours
-    // Format the date to a more readable form, local time assumed
-    const updatedDateString = date.toISOString().replace('T', ' ').substring(0, 19);
-    return updatedDateString;
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/1000"
-        );
-        const data = await response.json();
-        const updatedData = data.data.map((item, index) => ({
-          ...item,
-          stt: index + 1,
-          created_at: convertGMT(item.created_at) // Correctly access and convert created_at here
-        }));
-        console.log(updatedData); // This now holds the modified data
-        setData(updatedData);
-      } catch (error) {
-        console.error("Failed to fetch data", error);
-      }
-    };
-
-    const interval = setInterval(fetchData, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  
+  const rows = useDataFetch("https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/100");
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

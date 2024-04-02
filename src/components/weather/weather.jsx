@@ -1,42 +1,9 @@
 import {React, useState, useEffect} from 'react';
 import styles from './weather.module.css';
-
+import { getDataHumi, getDataLight, getDataTemp, convertUTCtoLocal } from '../../utils/weather';
 
 const Weather = () => {
-
-    const getDataHumi = async () => {
-        const response = await fetch("https://io.adafruit.com/api/v2/minhhieu181020/feeds/smarthome.humisensor");
-        const data = await response.json();
-        return data;
-      };
-    function convertUTCtoLocal(utcDateString) {
-        // Parse the UTC date string
-        const date = new Date(utcDateString);
-      
-        // Add the timezone offset (+7 hours)
-        // Note: getTimezoneOffset returns the difference in minutes, so you need to adjust it accordingly.
-        // Since you want to specifically add 7 hours regardless of the local timezone, we directly add 7 hours.
-        date.setHours(date.getHours() + 7);
-      
-        // Format the date to the desired format: "YYYY-MM-DD HH:MM:SS"
-        const formattedDate = date.toISOString().replace('T', ' ').substring(0, 19);
-      
-        return formattedDate;
-    }
-
-    const getDataTemp = async () => {
-        const response = await fetch("https://io.adafruit.com/api/v2/minhhieu181020/feeds/smarthome.tempsensor");
-        const data = await response.json();
-        data.updated_at = convertUTCtoLocal(data.updated_at);
-        return data;
-      };
-
-      const getDataLight = async () => {
-        const response = await fetch("https://io.adafruit.com/api/v2/minhhieu181020/feeds/smarthome.lightsensor");
-        const data = await response.json();
-        return data;
-      };
-
+  
     const [dataHumi, setDataHumi] = useState(null);
     const [dataTemp, setDataTemp] = useState(null);
     const [dataLight, setDataLight] = useState(null);
@@ -61,7 +28,7 @@ const Weather = () => {
     
         // Set up the interval to fetch data every X milliseconds.
         // For example, to refresh data every 5 seconds, set the interval to 5000 milliseconds.
-        const intervalId = setInterval(fetchAndSetData, 2000);
+        const intervalId = setInterval(fetchAndSetData, 30000);
     
         // Clean up the interval on component unmount.
         return () => clearInterval(intervalId);
