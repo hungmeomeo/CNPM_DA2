@@ -1,9 +1,10 @@
 import {React, useState, useEffect} from 'react';
 import styles from './weather.module.css';
 import { getDataHumi, getDataLight, getDataTemp, convertUTCtoLocal } from '../../utils/weather';
+import { useTranslation } from 'react-i18next';
 
 const Weather = () => {
-
+    const [t, i18n] = useTranslation("global");
     const [dataHumi, setDataHumi] = useState(null);
     const [dataTemp, setDataTemp] = useState(null);
     const [dataLight, setDataLight] = useState(null);
@@ -28,7 +29,7 @@ const Weather = () => {
     
         // Set up the interval to fetch data every X milliseconds.
         // For example, to refresh data every 5 seconds, set the interval to 5000 milliseconds.
-        const intervalId = setInterval(fetchAndSetData, 5000);
+        const intervalId = setInterval(fetchAndSetData, 3000);
     
         // Clean up the interval on component unmount.
         return () => clearInterval(intervalId);
@@ -54,15 +55,15 @@ const Weather = () => {
             <div className={styles.nav}>
               <div className={styles.ul}>
                 <div className={styles.li} >
-                  <div className={styles.link}>Nhiệt độ</div>
+                  <div className={styles.link}>{t("cur.temp")}</div>
                 </div>
 
                 <div className={styles.li}>
-                  <div className={styles.link}>Độ ẩm</div>
+                  <div className={styles.link}>{t("cur.humi")}</div>
                 </div>
 
                 <div className={styles.li}>
-                  <div className={styles.link}>Ánh sáng</div>
+                  <div className={styles.link}>{t("cur.light")}</div>
                 </div>
               </div>
             </div>

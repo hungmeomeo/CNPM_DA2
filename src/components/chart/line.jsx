@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import swal from "sweetalert";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -99,13 +99,13 @@ const options = {
   },
 };
 
-function graphData1(data){
+function graphData1(data, t){
   return (
     {
       labels: labelsWeekly,
       datasets: [
         {
-          label: "Nhiệt độ trung bình",
+          label: t("stat.temp"),
           data:  data,
           
           borderColor: "rgb(255, 99, 132)",
@@ -116,13 +116,13 @@ function graphData1(data){
   )
 }
 
-function graphData2(data){
+function graphData2(data, t){
   return (
     {
       labels: labelsWeekly,
       datasets: [
         {
-          label: "Độ ẩm trung bình",
+          label: t("stat.humi"),
           data: data,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgba(53, 162, 235, 0.5)",
@@ -132,13 +132,13 @@ function graphData2(data){
   )
 }
 
-function graphData3(data){
+function graphData3(data, t){
   return (
     {
       labels: labelsWeekly,
       datasets: [
         {
-          label: "Ánh sáng trung bình",
+          label: t("stat.light"),
           data: data,
           borderColor: "	rgb(255,255,0)",
           backgroundColor: "	rgb(255,255,51)",
@@ -174,6 +174,8 @@ const LineChart = () => {
   const [dataTemp, setDataTemp] = useState([]);
   const [dataLight, setDataLight] = useState([]);
 
+  const [t, i18n] = useTranslation("global");
+
   useEffect(() => {
     const fetchAndSetData = () => {
         Promise.all([getDataHumi(), getDataTemp(), getDataLight()])
@@ -198,17 +200,17 @@ const LineChart = () => {
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData1(dataTemp.data)}
+        data = {graphData1(dataTemp.data, t)}
       />
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData2(dataHumi.data)}
+        data = {graphData2(dataHumi.data, t)}
       />
       <Line
         style={{ marginBottom: "30px" }}
         options={options}
-        data = {graphData3(dataLight.data)}
+        data = {graphData3(dataLight.data, t)}
       />
     </div>
   );

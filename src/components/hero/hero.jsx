@@ -1,11 +1,11 @@
-import "./hero.css";
+import styles from "./hero.module.css";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 const Hero = () => {
   const [t, i18n] = useTranslation("global");
   return (
-    <div className="homepageHero ">
+    <div className={styles.homepageHero}>
       <h1 style={{ fontSize: "64px" }}>
         <span style={{ color: "var(--text-primary)" }}>Intel</span>Home
       </h1>
@@ -27,7 +27,7 @@ const Hero = () => {
           color: "var(--text-secondary)",
         }}
       >
-        Hỗ trợ các hộ gia đình trong việc theo dõi tình trạng nhà cửa từ xa thông qua các thiết bị thông minh
+        {t("hero.content")}
       </p >
     </div>
   );

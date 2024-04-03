@@ -5,7 +5,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useTranslation } from "react-i18next";
-import Toggle from "../control/control";
 
 const Navbar = () => {
   const [age, setAge] = React.useState('');
@@ -37,18 +36,18 @@ const Navbar = () => {
           </li>
           <li>
             <a href="/">
-              Theo dõi
+              {t("nav.flo")}
             </a>
           </li>
           <li>
             <a href="/stat">
-              Thống kê
+            {t("nav.stat")}
             </a>
           </li>
           
           <li>
             <a href="/history">
-              Hoạt động
+            {t("nav.act")}
             </a>
           </li>
           

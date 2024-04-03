@@ -14,34 +14,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import TextField from '@mui/material/TextField';
-
-
-const columns = [
-  { id: 'stt', label: 'Index', minWidth: 50, align: 'center' },
-  { id: 'feed_id', label: 'Feed ID', minWidth: 170 },
-  { id: 'value', label: 'Status', minWidth: 100 },
-  {
-    id: 'created_at',
-    label: 'Time',
-    minWidth: 190,
-    align: 'center',
-    format: value => value.toLocaleString('en-US'),
-  }
-];
+import { columns } from '../../context/columns';
 
 export default function StickyHeadTable() {
-
-  // Swal.fire({
-  //   title: "The Internet?",
-  //   text: "That thing is still around?",
-  //   icon: "question"
-  // });
   
   const rawRows = useDataFetch("https://multidisciplinary-project.onrender.com/api/v1/onoff/activity/100");
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [dateRange, setDateRange] = useState([null, null]);
   const [search, setSearch] = React.useState("")
 
   const handleChangePage = (event, newPage) => {
@@ -52,8 +33,6 @@ export default function StickyHeadTable() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  const [dateRange, setDateRange] = useState([null, null]);
 
   const rows = rawRows.filter(row => {
     if (search) {
@@ -73,17 +52,6 @@ export default function StickyHeadTable() {
     }
     return true
   })
-  
-
-
-  // Use useEffect to print the value whenever it changes
-  useEffect(() => {
-    console.log('Date Range:', dateRange);
-    // Optionally format the output if the values are not null
-    if (dateRange[0] && dateRange[1]) {
-      console.log(`Formatted Range: ${dateRange[0].format('YYYY-MM-DD')} to ${dateRange[1].format('YYYY-MM-DD')}`);
-    }
-  }, [dateRange]);
   
 
 return (
