@@ -1,6 +1,6 @@
 // Adding toggle by Material-UI
 
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Switch from '@material-ui/core/Switch';
 import InputSlider from '../slider/slider';
 import Box from '@mui/material/Box';
@@ -9,6 +9,8 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+
+import {fetchCurrentValueFromAdafruit, addNewValueToAdafruit} from '../../utils/devices';
 
 const AntSwitch = styled(Switch)(({ theme }) => ({
     width: 56, // Increased from 28
@@ -51,24 +53,60 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
     },
   }));
 const Toggle = () => {
-    const [powerOn, setPowerOn] = useState(false);
-    const [powerOn1, setPowerOn1] = useState(false);
-    const [powerOn2, setPowerOn2] = useState(false);
-    
-    const handleToggle = () => {
-        setPowerOn(!powerOn);
-        console.log("3434")
+  const [powerOn, setPowerOn] = useState(false);
+  const [powerOn1, setPowerOn1] = useState(false);
+  const [powerOn2, setPowerOn2] = useState(false);
+
+  const feedKeys = ['smarthome.led', 'smarthome.thieftcontrol', 'smarthome.doorcontrol']; // Example feed keys for devices
+
+  useEffect(() => {
+    // Function to fetch the current toggle states
+    const fetchToggleStates = () => {
+        feedKeys.forEach((key, index) => {
+            fetchCurrentValueFromAdafruit(key).then(({ lastValue }) => {
+                if (index === 0) setPowerOn(lastValue === 'ON');
+                if (index === 1) setPowerOn1(lastValue === 'ON');
+                if (index === 2) setPowerOn2(lastValue === 'ON');
+            }).catch(error => console.error(`Error fetching state for ${key}:`, error));
+        });
     };
 
-    const handleToggle1 = () => {
-        setPowerOn1(!powerOn1);
-        console.log("343423s34")
-    };
+    // Initial fetch
+    fetchToggleStates();
 
-    const handleToggle2 = () => {
-        setPowerOn2(!powerOn2);
-        console.log("3434342423")
-    };
+    // Set interval to fetch every 3 seconds
+    const intervalId = setInterval(fetchToggleStates, 3000);
+
+    // Cleanup function to clear the interval
+    return () => clearInterval(intervalId);
+}, [feedKeys]);
+
+  const updateAdafruit = async (key, newState) => {
+      try {
+          await addNewValueToAdafruit(key, newState ? 'ON' : 'OFF');
+          console.log(`Updated ${key} to ${newState}`);
+      } catch (error) {
+          console.error(`Error updating ${key}:`, error);
+      }
+  };
+
+  const handleToggle = () => {
+      const newState = !powerOn;
+      updateAdafruit(feedKeys[0], newState);
+      setPowerOn(newState);
+  };
+
+  const handleToggle1 = () => {
+      const newState = !powerOn1;
+      updateAdafruit(feedKeys[1], newState);
+      setPowerOn1(newState);
+  };
+
+  const handleToggle2 = () => {
+      const newState = !powerOn2;
+      updateAdafruit(feedKeys[2], newState);
+      setPowerOn2(newState);
+  };
 
     return (
         <FormControl  component="fieldset">

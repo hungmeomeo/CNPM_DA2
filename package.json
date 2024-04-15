@@ -23,7 +23,7 @@
     "@mui/material": "^5.15.14",
     "@mui/x-date-pickers": "^7.1.0",
     "@mui/x-date-pickers-pro": "^7.1.0",
-    "axios": "^1.6.2",
+    "axios": "^1.6.8",
     "chart.js": "^4.4.1",
     "dayjs": "^1.11.10",
     "faker": "^6.6.6",
